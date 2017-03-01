@@ -1,0 +1,29 @@
+<h1>Add a reminder, yo!</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<form action="/reminders/add" method="post">
+{% csrf_token %}
+<input type="textarea" name="reminder_text" id="reminder_text_1" value="delete this and type something here" />
+<input type="submit" value="Tap that." />
+</form>
+
+{% if upcoming %}
+    Next 3 Reminders...
+    <ul>
+    {% for next_few in upcoming %}
+    <li><a href="{% url 'reminders:detail' next_few.slug %}">{{ next_few.text }}</a> [ <a href="{% url 'reminders:delete' next_few.slug %}">-</a> ]</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No reminders are available.</p>
+{% endif %}
+<hr>
+{% if reminders %}
+    The rest of the story...
+    <ul>
+    {% for reminder in reminders %}
+    <li><a href="{% url 'reminders:detail' reminder.slug %}">{{ reminder.text }}</a> [ <a href="{% url 'reminders:delete' reminder.slug %}">-</a> ]</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No reminders are available.</p>
+{% endif %}
